@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import sys
 
@@ -19,7 +19,7 @@ class BashFileIterator:
         def __eq__(self, other):
             if isinstance(other, BashFileIterator._Delimiter):
                 return other.character == self.character
-            elif isinstance(other, basestring):
+            elif isinstance(other, str):
                 return other == self.character
             return False
 
@@ -213,7 +213,6 @@ class BashFileIterator:
             self.pos += 1
 
         assert not self.isInsideGroup(), 'Invalid syntax'
-        raise StopIteration
 
     def isEscaped(self):
         return self.pos in self._indices_of_escaped_characters
@@ -350,13 +349,3 @@ if __name__ == "__main__":
     # use stdout.write instead of print to avoid newline at the end (print with comma at the end does not work)
     sys.stdout.write(minify(src))
 
-
-# important rules:
-# 1. A single-quote cannot occur within single-quotes.
-# 2. The input characters within the double-quoted string that are also enclosed between "$(" and the matching ')'
-#    shall not be affected by the double-quotes, but rather shall define that command whose output replaces the "$(...)"
-#    when the word is expanded.
-# 3. Within the double-quoted string of characters from an enclosed "${" to the matching '}', an even number of
-#    unescaped double-quotes or single-quotes, if any, shall occur. A preceding <backslash> character shall be used
-#    to escape a literal '{' or '}'
-# 4.
